@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitación Especial</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #f5f1eb 0%, #e8ddd4 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .invitation-container {
+            max-width: 500px;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            overflow: hidden;
+            border: 3px solid #d4af37;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #d4af37, #f4e794);
+            padding: 30px;
+            text-align: center;
+            color: #2c1810;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .guest-name {
+            font-size: 1.3em;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.3);
+            border-radius: 25px;
+            font-weight: bold;
+        }
+
+        .decorative-line {
+            width: 80px;
+            height: 3px;
+            background: #2c1810;
+            margin: 15px auto;
+        }
+
+        .invitation-content {
+            padding: 40px 30px;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        .invitation-text {
+            font-size: 1.1em;
+            color: #2c1810;
+            margin-bottom: 30px;
+        }
+
+        .event-details {
+            background: #faf8f5;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 30px 0;
+            border-left: 4px solid #d4af37;
+        }
+
+        .detail-item {
+            margin: 15px 0;
+            font-size: 1.1em;
+        }
+
+        .detail-label {
+            font-weight: bold;
+            color: #2c1810;
+            display: inline-block;
+            min-width: 80px;
+        }
+
+        .detail-value {
+            color: #444;
+        }
+
+        .confirmation-section {
+            margin-top: 40px;
+            padding: 30px;
+            background: #f9f7f4;
+            border-radius: 10px;
+        }
+
+        .confirmation-text {
+            font-size: 1.2em;
+            color: #2c1810;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .confirm-button, .decline-button {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 140px;
+            font-family: 'Georgia', serif;
+        }
+
+        .confirm-button {
+            background: #27ae60;
+            color: white;
+        }
+
+        .confirm-button:hover {
+            background: #219a52;
+            transform: translateY(-2px);
+        }
+
+        .decline-button {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .decline-button:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .companions-section {
+            margin-top: 25px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border: 2px solid #27ae60;
+            display: none;
+        }
+
+        .companions-title {
+            font-size: 1.1em;
+            color: #2c1810;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .companions-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .companion-btn {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #27ae60;
+            background: white;
+            color: #27ae60;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .companion-btn:hover, .companion-btn.selected {
+            background: #27ae60;
+            color: white;
+        }
+
+        .final-confirm-btn {
+            width: 100%;
+            padding: 15px;
+            background: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .final-confirm-btn:hover {
+            background: #219a52;
+        }
+
+        .response-message {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            display: none;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .decline {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .loading {
+            background: #cce5ff;
+            color: #004085;
+            border: 1px solid #b3d7ff;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9em;
+            border-top: 1px solid #eee;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .invitation-content {
+                padding: 30px 20px;
+            }
+            
+            .button-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .confirm-button, .decline-button {
+                width: 100%;
+                max-width: 250px;
+            }
+
+            .companions-buttons {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="invitation-container">
+        <div class="header">
+            <h1>Tiene el honor de invitarle</h1>
+            <div id="guestName" class="guest-name"></div>
+            <div class="decorative-line"></div>
+        </div>
+        
+        <div class="invitation-content">
+            <div class="invitation-text">
+                <p><strong>Estimado/a invitado/a:</strong></p>
+                <p>Con gran alegría le extendemos esta cordial invitación para acompañarnos en una ocasión muy especial.</p>
+            </div>
+            
+            <div class="event-details">
+                <div class="detail-item">
+                    <span class="detail-label">Evento:</span>
+                    <span class="detail-value">Celebración Especial</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Fecha:</span>
+                    <span class="detail-value">Sábado, 15 de Diciembre 2025</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Hora:</span>
+                    <span class="detail-value">7:00 PM</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Lugar:</span>
+                    <span class="detail-value">Salón de Eventos "Los Jardines"<br>
+                    Av. Principal #123, Centro</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Dress Code:</span>
+                    <span class="detail-value">Elegante Casual</span>
+                </div>
+            </div>
+            
+            <div class="confirmation-section">
+                <p class="confirmation-text">
+                    Por favor, confirme su asistencia presionando el botón correspondiente:
+                </p>
+                
+                <div id="initialButtons" class="button-container">
+                    <button class="confirm-button" onclick="showCompanionsSection()">
+                        ✓ CONFIRMO MI ASISTENCIA
+                    </button>
+                    <button class="decline-button" onclick="declineAttendance()">
+                        ✗ NO PODRÉ ASISTIR
+                    </button>
+                </div>
+
+                <div id="companionsSection" class="companions-section">
+                    <p class="companions-title">
+                        ¿Cuántas personas en total asistirán? (incluyéndose usted)
+                    </p>
+                    <div class="companions-buttons">
+                        <button class="companion-btn" onclick="selectCompanions(1)">1</button>
+                        <button class="companion-btn" onclick="selectCompanions(2)">2</button>
+                        <button class="companion-btn" onclick="selectCompanions(3)">3</button>
+                        <button class="companion-btn" onclick="selectCompanions(4)">4</button>
+                        <button class="companion-btn" onclick="selectCompanions(5)">5</button>
+                        <button class="companion-btn" onclick="selectCompanions(6)">6</button>
+                    </div>
+                    <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">
+                        Si no está seguro del número exacto, seleccione una cantidad aproximada.<br>
+                        Puede modificar este número más adelante contactándonos.
+                    </p>
+                    <button id="finalConfirmBtn" class="final-confirm-btn" onclick="confirmAttendance()">
+                        CONFIRMAR MI ASISTENCIA
+                    </button>
+                </div>
+                
+                <div id="responseMessage" class="response-message"></div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Su confirmación es muy importante para nosotros</p>
+            <p>¡Esperamos verle pronto!</p>
+        </div>
+    </div>
+
+    <script>
+        // Configuración - DEBES CAMBIAR ESTAS URLs POR LAS TUYAS
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbylcA-4zJDsw1gg8i4VmnXsymWRra0xulP9gkfnScIFWrnd4GF_uEmN9HxkH5UQ0cv3/exec';
+        
+        let selectedCompanions = 1;
+        let guestName = '';
+
+        // Obtener nombre del invitado de la URL
+        function getGuestNameFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const name = urlParams.get('nombre') || urlParams.get('name');
+            return name ? decodeURIComponent(name) : 'Estimado Invitado';
+        }
+
+        // Inicializar página
+        function initializePage() {
+            guestName = getGuestNameFromURL();
+            document.getElementById('guestName').textContent = guestName;
+        }
+
+        function showCompanionsSection() {
+            document.getElementById('initialButtons').style.display = 'none';
+            document.getElementById('companionsSection').style.display = 'block';
+        }
+
+        function selectCompanions(number) {
+            selectedCompanions = number;
+            
+            // Remover selección anterior
+            const buttons = document.querySelectorAll('.companion-btn');
+            buttons.forEach(btn => btn.classList.remove('selected'));
+            
+            // Seleccionar botón actual
+            event.target.classList.add('selected');
+        }
+
+        function confirmAttendance() {
+            // Mostrar mensaje de carga
+            const messageDiv = document.getElementById('responseMessage');
+            messageDiv.className = 'response-message loading';
+            messageDiv.style.display = 'block';
+            messageDiv.innerHTML = 'Enviando confirmación... Por favor espere.';
+            
+            // Preparar datos
+            const confirmationData = {
+                nombre: guestName,
+                asistencia: 'confirmado',
+                personas: selectedCompanions,
+                fecha_respuesta: new Date().toISOString(),
+                user_agent: navigator.userAgent
+            };
+
+            // Enviar a Google Sheets
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors', // Importante para Google Apps Script
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(confirmationData)
+            })
+            .then(() => {
+                // Mostrar mensaje de éxito
+                messageDiv.className = 'response-message success';
+                messageDiv.innerHTML = `¡Gracias por confirmar, ${guestName}!<br>
+                                      Su asistencia ha sido registrada exitosamente.<br>
+                                      <strong>Personas confirmadas: ${selectedCompanions}</strong><br>
+                                      ¡Nos vemos en la celebración!`;
+                
+                // Deshabilitar botones
+                document.getElementById('companionsSection').style.pointerEvents = 'none';
+                document.getElementById('companionsSection').style.opacity = '0.7';
+                
+                // Opcional: Enviar confirmación por WhatsApp
+                setTimeout(() => {
+                    const message = `¡Hola! Soy ${guestName} y he confirmado mi asistencia a la celebración del 15 de Diciembre. Somos ${selectedCompanions} persona(s). ¡Nos vemos ahí! 🎉`;
+                    const phoneNumber = "4271118672"; // CAMBIAR POR TU NÚMERO
+                    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                    
+                    if (confirm("¿Desea enviar también una confirmación por WhatsApp?")) {
+                        window.open(whatsappUrl, '_blank');
+                    }
+                }, 2000);
+                
+            })
+            .catch(error => {
+                // En caso de error, mostrar mensaje pero considerar exitoso
+                messageDiv.className = 'response-message success';
+                messageDiv.innerHTML = `¡Gracias por confirmar, ${guestName}!<br>
+                                      Su confirmación ha sido procesada.<br>
+                                      <strong>Personas confirmadas: ${selectedCompanions}</strong><br>
+                                      Si tiene alguna duda, contáctenos directamente.`;
+                
+                document.getElementById('companionsSection').style.pointerEvents = 'none';
+                document.getElementById('companionsSection').style.opacity = '0.7';
+            });
+        }
+        
+        function declineAttendance() {
+            const messageDiv = document.getElementById('responseMessage');
+            messageDiv.className = 'response-message loading';
+            messageDiv.style.display = 'block';
+            messageDiv.innerHTML = 'Procesando respuesta...';
+            
+            const declineData = {
+                nombre: guestName,
+                asistencia: 'declinado',
+                personas: 0,
+                fecha_respuesta: new Date().toISOString(),
+                user_agent: navigator.userAgent
+            };
+
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(declineData)
+            })
+            .then(() => {
+                messageDiv.className = 'response-message decline';
+                messageDiv.innerHTML = `Gracias por responder, ${guestName}.<br>
+                                      Lamentamos que no pueda acompañarnos.<br>
+                                      ¡Esperamos verle en una próxima ocasión!`;
+                
+                document.getElementById('initialButtons').style.pointerEvents = 'none';
+                document.getElementById('initialButtons').style.opacity = '0.7';
+            })
+            .catch(error => {
+                messageDiv.className = 'response-message decline';
+                messageDiv.innerHTML = `Gracias por responder, ${guestName}.<br>
+                                      Su respuesta ha sido procesada.<br>
+                                      ¡Esperamos verle en una próxima ocasión!`;
+                
+                document.getElementById('initialButtons').style.pointerEvents = 'none';
+                document.getElementById('initialButtons').style.opacity = '0.7';
+            });
+        }
+
+        // Inicializar cuando carga la página
+        window.addEventListener('load', initializePage);
+    </script>
+</body>
+</html>
